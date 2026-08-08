@@ -3,7 +3,7 @@
 #include<iomanip>
 
 using namespace std;
-void Board::draw(vector<Piece*> player1Pieces)
+void Board::draw(vector<Piece*> player1Pieces, vector<Piece*> player2Pieces)
 {
 	for (int row = 9; row >= 0; row = row - 1)
 	{
@@ -20,16 +20,20 @@ void Board::draw(vector<Piece*> player1Pieces)
 			else
 			{
 				int i = 0;
-				bool found = 0;
-				while (i < player1Pieces.size() && !found)
+				bool foundP1 = 0, foundP2 = 0;;
+				while (((i < player1Pieces.size()) || (i < player2Pieces.size())) && !foundP1 && !foundP2)
 				{
 					if (player1Pieces[i]->column == column && player1Pieces[i]->row == row)
-						found = 1;
+						foundP1 = 1;
+					else if (player2Pieces[i]->column == column && player2Pieces[i]->row == row)
+						foundP2 = 1;
 					else
 						i = i + 1;
 				}
-				if (found == 1)
+				if (foundP1 == 1)
 					cout << '[' << player1Pieces[i]->displayName() << ']' << ' ';
+				else if(foundP2 == 1)
+					cout << '[' << player2Pieces[i]->displayName() << ']' << ' ';
 				else
 					cout << '[' << ' ' << ']' << ' ';
 			}
@@ -38,4 +42,5 @@ void Board::draw(vector<Piece*> player1Pieces)
 			cout << right << setw(2) << row << setfill(' ');
 		cout << '\n';
 	}
+	cout << right;
 }

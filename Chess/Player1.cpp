@@ -4,6 +4,8 @@
 #include"Knight.h"
 #include"Bishop.h"
 #include"Queen.h"
+#include"King.h"
+
 Player1::Player1()
 {
 }
@@ -11,38 +13,76 @@ Player1::Player1()
 void Player1::initialize()
 {
 	// Pawns
-	piece.push_back(new Pawn('a', 2));
-	piece.push_back(new Pawn('b', 2));
-	piece.push_back(new Pawn('c', 2));
-	piece.push_back(new Pawn('d', 2));
-	piece.push_back(new Pawn('e', 2));
-	piece.push_back(new Pawn('f', 2));
-	piece.push_back(new Pawn('g', 2));
-	piece.push_back(new Pawn('h', 2));
+	piece.push_back(new Pawn('1', 'a', 2));
+	piece.push_back(new Pawn('1', 'b', 2));
+	piece.push_back(new Pawn('1', 'c', 2));
+	piece.push_back(new Pawn('1', 'd', 2));
+	piece.push_back(new Pawn('1', 'e', 2));
+	piece.push_back(new Pawn('1', 'f', 2));
+	piece.push_back(new Pawn('1', 'g', 2));
+	piece.push_back(new Pawn('1', 'h', 2));
 
 	//Rooks
-	piece.push_back(new Rook('a', 1));
-	piece.push_back(new Rook('h', 1));
+	piece.push_back(new Rook('1', 'a', 1));
+	piece.push_back(new Rook('1', 'h', 1));
 
 	//Knights
-	piece.push_back(new Knight('b', 1));
-	piece.push_back(new Knight('g', 1));
+	piece.push_back(new Knight('1', 'b', 1));
+	piece.push_back(new Knight('1', 'g', 1));
 
 	//Bishop
-	piece.push_back(new Bishop('c', 1));
-	piece.push_back(new Bishop('f', 1));
+	piece.push_back(new Bishop('1', 'c', 1));
+	piece.push_back(new Bishop('1', 'f', 1));
 
 	//Queen
-	piece.push_back(new Queen('d', 1));
+	piece.push_back(new Queen('1', 'd', 1));
+
+	//King
+	piece.push_back(new King('1', 'e', 1));
 }
 
-bool Player1::legalMove(char column, int row)
+int Player1::findPiece(char srcColumn, int srcRow)
 {
-	return false;
+	bool found = 0;
+	int i = 0;
+	while (i < piece.size() && !found)
+	{
+		if (piece[i]->row == srcRow && piece[i]->column == srcColumn)
+			found = 1;
+		else
+			i = i + 1;
+	}
+	if (!found)
+	{
+		cout << '\n' << "None of your pieces is present at that location!" << '\n';
+		return -1;
+	}
+	return i;
 }
 
-void Player1::move(char column, int row, int i)
+bool Player1::isValideMove(char destColumn, int destRow, int i)
 {
-	piece[i]->row = row;
-	piece[i]->column = column;
+	if (piece[i]->checkLegalMove(destColumn, destRow))
+	{
+		if (piece[i]->isPathClear(destColumn, destRow, piece))
+		{
+			update(destColumn, destRow, i);
+			return true;
+		}
+		else
+		{
+			cout <<'\n' << "Path is not clear!" << '\n';
+			return false;
+		}
+	}
+	else
+	{
+		cout << '\n' << "Illegal Move!" << '\n' << "This move is not valid for the piece!" << '\n';
+		return false;
+	}
+}
+
+void Player1::update(char column, int row, int i)
+{
+	piece[i]->updatePosition(column,row);
 }

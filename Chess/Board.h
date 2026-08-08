@@ -7,6 +7,6 @@ class Board
 {
 
 public:
-	void draw(vector<Piece*> player1Pieces);
+	void draw(vector<Piece*> player1Pieces, vector<Piece*> player2Pieces);
 };
 

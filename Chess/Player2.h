@@ -6,14 +6,14 @@
 #include"Piece.h"
 
 using namespace std;
-class Player1
+class Player2
 {
 public:
 	vector<Piece*> piece;
 
 public:
-	Player1();
-	void initialize();
+	Player2();
+	void initialize() ;
 	int findPiece(char srcColumn, int srcRow) ;
 	bool isValideMove(char destColumn, int destRow, int i) ;
 	void update(char column, int row, int i) ;

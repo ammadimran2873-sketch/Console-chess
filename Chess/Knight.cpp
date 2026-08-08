@@ -1,13 +1,16 @@
 #include "Knight.h"
 
-Knight::Knight(char column, int row)
+Knight::Knight(char playerNo, char column, int row)
 {
-	this->name = 'N';
+	if (playerNo == '1')
+		this->name = 'N';
+	else
+		this->name = 'n';
 	this->row = row;
 	this->column = column;
 }
 
-bool Knight::legalMove(char column, int row)
+bool Knight::checkLegalMove(char column, int row)
 {
 	if (row >= 1 && row <= 8 && column >= 'a' && column <= 'h')
 	{
@@ -16,6 +19,18 @@ bool Knight::legalMove(char column, int row)
 			return true;
 	}
 	return false;
+}
+
+bool Knight::isPathClear(char column, int row, vector<Piece*> piece)
+{
+	int cmp = 0;
+	while (cmp < piece.size())
+	{
+		if ((piece[cmp]->row == row) && (piece[cmp]->column == column))
+			return false;
+		cmp = cmp + 1;
+	}
+	return true;
 }
 
 void Knight::updatePosition(char column, int row)

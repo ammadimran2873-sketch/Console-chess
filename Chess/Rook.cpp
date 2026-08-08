@@ -1,13 +1,16 @@
 #include "Rook.h"
 
-Rook::Rook(char column, int row)
+Rook::Rook(char playerNo, char column, int row)
 {
-	this->name = 'R';
+	if (playerNo == '1')
+		this->name = 'R';
+	else
+		this->name = 'r';
 	this->row = row;
 	this->column = column;
 }
 
-bool Rook::legalMove(char column, int row)
+bool Rook::checkLegalMove(char column, int row)
 {
 	if (row >= 1 && row <= 8 && column >= 'a' && column <= 'h')
 	{
@@ -15,6 +18,42 @@ bool Rook::legalMove(char column, int row)
 			return true;
 	}
 	return false;
+}
+
+bool Rook::isPathClear(char column, int row, vector<Piece*> piece)
+{
+	int cmp = 0;
+	while (cmp < piece.size())
+	{
+		if (piece[cmp]->column == column)
+		{
+			if (row > this->row)
+			{
+				if (piece[cmp]->row <= row && piece[cmp]->row > this->row)
+					return false;
+			}
+			else
+			{
+				if (piece[cmp]->row >= row && piece[cmp]->row < this->row)
+					return false;
+			}
+		}
+		else
+		{
+			if (column > this->column)
+			{
+				if (piece[cmp]->column <= column && piece[cmp]->column > this->column)
+					return false;
+			}
+			else
+			{
+				if (piece[cmp]->column >= row && piece[cmp]->row < this->row)
+					return false;
+			}
+		}
+		cmp = cmp + 1;
+	}
+	return true;
 }
 
 void Rook::updatePosition(char column, int row)
