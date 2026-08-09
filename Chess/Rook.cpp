@@ -10,7 +10,7 @@ Rook::Rook(char playerNo, char column, int row)
 	this->column = column;
 }
 
-bool Rook::checkLegalMove(char column, int row)
+bool Rook::checkLegalMove(char column, int row, vector<Piece*> opponentPiece)
 {
 	if (row >= 1 && row <= 8 && column >= 'a' && column <= 'h')
 	{

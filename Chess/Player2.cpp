@@ -5,6 +5,7 @@
 #include"Bishop.h"
 #include"Queen.h"
 #include"King.h"
+#include"SpecialRules.h"
 
 Player2::Player2()
 {
@@ -60,13 +61,13 @@ int Player2::findPiece(char srcColumn, int srcRow)
 	return i;
 }
 
-bool Player2::isValideMove(char destColumn, int destRow, int i)
+bool Player2::isValideMove(char destColumn, int destRow, int i, vector<Piece*> player1Pieces)
 {
-	if (piece[i]->checkLegalMove(destColumn, destRow))
+	// check moves validity and path clearance
+	if (piece[i]->checkLegalMove(destColumn, destRow, player1Pieces))
 	{
 		if (piece[i]->isPathClear(destColumn, destRow, piece))
 		{
-			update(destColumn, destRow, i);
 			return true;
 		}
 		else
@@ -82,7 +83,26 @@ bool Player2::isValideMove(char destColumn, int destRow, int i)
 	}
 }
 
-void Player2::update(char column, int row, int i)
+void Player2::update(char column, int row, int i, vector<Piece*>& player1Pieces)
 {
 	piece[i]->updatePosition(column, row);
+	if (piece[i]->name == 'p')
+	{
+		if (row == 1)
+			SpecialRules::pawnPromotion('1', piece, i);
+	}
+
+	// Piece Capture
+	int cmp = 0;
+	bool found = 0;
+	while (!found && cmp < player1Pieces.size())
+	{
+		if (player1Pieces[cmp]->column == column && player1Pieces[cmp]->row == row)
+		{
+			found = 1;
+			player1Pieces.erase(player1Pieces.begin() + cmp);
+		}
+		else
+			cmp = cmp + 1;
+	}
 }

@@ -47,7 +47,7 @@ int main()
 			cin >> destColumn >> destRow;
 
 
-			while (!(player1.isValideMove(destColumn, destRow, i)))
+			while (!(player1.isValideMove(destColumn, destRow, i, player2.piece)))
 			{
 				cout << '\n' << "Enter the source piece location: ";
 				cin >> srcColumn >> srcRow;
@@ -62,6 +62,7 @@ int main()
 				cout << "Enter the destination piece location: ";
 				cin >> destColumn >> destRow;
 			}
+			player1.update(destColumn, destRow, i, player2.piece);
 			turn = 1;
 		}
 		else
@@ -81,7 +82,7 @@ int main()
 			cin >> destColumn >> destRow;
 
 
-			while (!(player2.isValideMove(destColumn, destRow, i)))
+			while (!(player2.isValideMove(destColumn, destRow, i, player1.piece)))
 			{
 				cout << '\n' << "Enter the source piece location: ";
 				cin >> srcColumn >> srcRow;
@@ -95,6 +96,7 @@ int main()
 				cout << "Enter the destination piece location: ";
 				cin >> destColumn >> destRow;
 			}
+			player2.update(destColumn, destRow, i, player1.piece);
 			turn = 0;
 		}
 
@@ -104,7 +106,7 @@ int main()
 		cout << setw(50) << setfill('-') << '-' << '\n';
 
 		count = count + 1;
-		if (count == 6)
+		if (count == 12)
 			end = 1;
 	}
 	

@@ -10,7 +10,7 @@ Queen::Queen(char playerNo, char column, int row)
 	this->column = column;
 }
 
-bool Queen::checkLegalMove(char column, int row)
+bool Queen::checkLegalMove(char column, int row, vector<Piece*> opponentPiece)
 {
 	if (row >= 1 && row <= 8 && column >= 'a' && column <= 'h')
 	{

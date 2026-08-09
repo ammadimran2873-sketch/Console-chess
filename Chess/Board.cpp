@@ -20,12 +20,12 @@ void Board::draw(vector<Piece*> player1Pieces, vector<Piece*> player2Pieces)
 			else
 			{
 				int i = 0;
-				bool foundP1 = 0, foundP2 = 0;;
+				bool foundP1 = 0, foundP2 = 0;
 				while (((i < player1Pieces.size()) || (i < player2Pieces.size())) && !foundP1 && !foundP2)
 				{
-					if (player1Pieces[i]->column == column && player1Pieces[i]->row == row)
+					if ((i < player1Pieces.size()) && player1Pieces[i]->column == column && player1Pieces[i]->row == row)
 						foundP1 = 1;
-					else if (player2Pieces[i]->column == column && player2Pieces[i]->row == row)
+					else if ((i < player2Pieces.size()) && player2Pieces[i]->column == column && player2Pieces[i]->row == row)
 						foundP2 = 1;
 					else
 						i = i + 1;
