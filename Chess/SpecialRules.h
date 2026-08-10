@@ -11,5 +11,6 @@ class SpecialRules
 	
 public:
 	static void pawnPromotion(char playerNo, vector<Piece*>& piece, int pawnIndex);
+	static void enPassant(vector<Piece*>& opponentPiece, char column, int row);
 };
 

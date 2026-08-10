@@ -9,6 +9,11 @@ Pawn::Pawn(char playerNo, char column, int row)
 
     this->row = row;
     this->column = column;
+    firstMove = 1;
+
+    pawnTwoSquareMove = 0;
+    enPassantpossible = 1;
+    enPassantMove = 0;
 }
 
 bool Pawn::checkLegalMove(char column, int row, vector<Piece*> opponentPiece)
@@ -24,7 +29,7 @@ bool Pawn::checkLegalMove(char column, int row, vector<Piece*> opponentPiece)
             else
                 i = i + 1;
         }
-
+        
         // For diagnol
         if (intersect)
         {
@@ -39,6 +44,45 @@ bool Pawn::checkLegalMove(char column, int row, vector<Piece*> opponentPiece)
                     return true;
             }
             return false;
+        }
+        else
+        {
+            //For En passant
+            i = 0;
+            while (i < opponentPiece.size())
+            {
+                if (opponentPiece[i]->name == 'p' && opponentPiece[i]->pawnTwoSquareMove == 1)
+                {
+                    if (opponentPiece[i]->enPassantpossible && opponentPiece[i]->row == 5)
+                    {
+                        opponentPiece[i]->enPassantpossible = 0;
+                        if ((opponentPiece[i]->column == this->column + 1 || opponentPiece[i]->column == this->column - 1))
+                        {
+                            if (this->row + 1 == row && column == opponentPiece[i]->column)
+                            {
+                                enPassantMove = 1;
+                                return true;
+                            }
+                        }
+                    }
+                }
+                else if (opponentPiece[i]->name == 'P' && opponentPiece[i]->pawnTwoSquareMove == 1)
+                {
+                    if (opponentPiece[i]->enPassantpossible && opponentPiece[i]->row == 4)
+                    {
+                        opponentPiece[i]->enPassantpossible = 0;
+                        if ((opponentPiece[i]->column == this->column + 1 || opponentPiece[i]->column == this->column - 1))
+                        {
+                            if (this->row - 1 == row && column == opponentPiece[i]->column)
+                            {
+                                enPassantMove = 1;
+                                return true;
+                            }
+                        }
+                    }
+                }
+                i = i + 1;
+            }
         }
 
         // For one unit vertical
@@ -64,7 +108,7 @@ bool Pawn::checkLegalMove(char column, int row, vector<Piece*> opponentPiece)
             {
                 if (this->row + 2 == row && this->column == column)
                 {
-                    int cmp = 0;
+                    pawnTwoSquareMove = 1;
                     return true;
                 }
             }
@@ -72,6 +116,7 @@ bool Pawn::checkLegalMove(char column, int row, vector<Piece*> opponentPiece)
             {
                 if (this->row - 2 == row && this->column == column)
                 {
+                    pawnTwoSquareMove = 1;
                     return true;
                 }
             }

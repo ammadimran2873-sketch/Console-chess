@@ -90,6 +90,8 @@ void Player1::update(char column, int row, int i, vector<Piece*>& player2Pieces)
 	{
 		if (row == 8)
 			SpecialRules::pawnPromotion('1', piece, i);
+		else if (piece[i]->enPassantMove)
+			SpecialRules::enPassant(player2Pieces, column, row);
 	}
 
 	// Piece Capture

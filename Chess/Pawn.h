@@ -8,7 +8,9 @@ class Pawn :
     public Piece
 {
 private:
-    bool firstMove = 1;
+    bool firstMove;
+    bool enPassantpossible;
+    bool enPassantMove;
 public:
     Pawn(char playerNo, char column, int row);
     bool checkLegalMove(char column, int row, vector<Piece*> opponentPiece) override;

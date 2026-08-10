@@ -17,9 +17,9 @@ int main()
 	player2.initialize();
 
 	// chess board
-	cout << setw(50) << setfill('-')<<'-'<<'\n';
+	cout << setw(40) << setfill('-')<<'-'<<'\n';
 	board.draw(player1.piece, player2.piece);
-	cout << setw(50) << setfill('-') << '-' << '\n';
+	cout << setw(40) << setfill('-') << '-' << '\n';
 
 
 	char srcColumn, destColumn;

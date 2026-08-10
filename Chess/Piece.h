@@ -7,7 +7,15 @@ using namespace std;
 class Piece
 {
 public:
-	char name = 0;
+	char name;
+
+	// Pawn
+	bool pawnTwoSquareMove;
+	bool enPassantpossible;
+	bool enPassantMove;
+
+	// Rook
+	bool rookFirstMove;
 public:
 	int row = 0;
 	char column = 0;

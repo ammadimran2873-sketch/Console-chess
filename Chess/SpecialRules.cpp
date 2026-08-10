@@ -44,3 +44,38 @@ void SpecialRules::pawnPromotion(char playerNo, vector<Piece*>& piece, int pawnI
 		}
 	}
 }
+
+void SpecialRules::enPassant(vector<Piece*>& opponentPiece, char column, int row)
+{
+	int i = 0;
+	bool erase = 0;
+	if (opponentPiece[i]->name == 'p')
+	{
+		while (i < opponentPiece.size() && !erase)
+		{
+			if (opponentPiece[i]->column == column && opponentPiece[i]->row == row - 1)
+			{
+				opponentPiece.erase(opponentPiece.begin() + i);
+				erase = 1;
+			}
+			else
+				i = i + 1;
+
+		}
+	}
+	else
+	{
+		while (i < opponentPiece.size() && !erase)
+		{
+			if (opponentPiece[i]->column == column && opponentPiece[i]->row == row + 1)
+			{
+				opponentPiece.erase(opponentPiece.begin() + i);
+				erase = 1;
+			}
+			else
+				i = i + 1;
+
+		}
+	}
+	
+}
