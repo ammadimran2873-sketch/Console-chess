@@ -16,7 +16,7 @@ Pawn::Pawn(char playerNo, char column, int row)
     enPassantMove = 0;
 }
 
-bool Pawn::checkLegalMove(char column, int row, vector<Piece*> opponentPiece)
+bool Pawn::isLegalMove(char column, int row, vector<Piece*>piece, vector<Piece*> opponentPiece)
 {
     if (row >= 1 && row <= 8 && column >= 'a' && column <= 'h')
     {

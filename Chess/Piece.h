@@ -8,19 +8,21 @@ class Piece
 {
 public:
 	char name;
+	int row;
+	char column;
+	bool firstMove;
 
-	// Pawn
+	// For En Passant
 	bool pawnTwoSquareMove;
 	bool enPassantpossible;
 	bool enPassantMove;
 
-	// Rook
-	bool rookFirstMove;
+	// For Castling
+	bool castling;
+
 public:
-	int row = 0;
-	char column = 0;
-public:
-	virtual bool checkLegalMove(char column, int row, vector<Piece*> opponentPiece) = 0;
+	Piece();
+	virtual bool isLegalMove(char column, int row, vector<Piece*>piece, vector<Piece*> opponentPiece) = 0;
 	virtual bool isPathClear(char column, int row, vector<Piece*>piece) = 0;
 	virtual void updatePosition(char column, int row) = 0;
 	virtual char displayName() = 0;

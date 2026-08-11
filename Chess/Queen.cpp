@@ -10,7 +10,7 @@ Queen::Queen(char playerNo, char column, int row)
 	this->column = column;
 }
 
-bool Queen::checkLegalMove(char column, int row, vector<Piece*> opponentPiece)
+bool Queen::isLegalMove(char column, int row, vector<Piece*>piece, vector<Piece*> opponentPiece)
 {
 	if (row >= 1 && row <= 8 && column >= 'a' && column <= 'h')
 	{
@@ -63,16 +63,16 @@ bool Queen::isPathClear(char column, int row, vector<Piece*> piece)
 	{
 		while (cmp < piece.size())
 		{
-			if (piece[cmp]->column == column)
+			if (this->column == column && this->row != row)
 			{
 				if (row > this->row)
 				{
-					if (piece[cmp]->row <= row && piece[cmp]->row > this->row)
+					if (piece[cmp]->column == column && piece[cmp]->row <= row && piece[cmp]->row > this->row)
 						return false;
 				}
 				else
 				{
-					if (piece[cmp]->row >= row && piece[cmp]->row < this->row)
+					if (piece[cmp]->column == column && piece[cmp]->row >= row && piece[cmp]->row < this->row)
 						return false;
 				}
 			}
@@ -80,12 +80,12 @@ bool Queen::isPathClear(char column, int row, vector<Piece*> piece)
 			{
 				if (column > this->column)
 				{
-					if (piece[cmp]->column <= column && piece[cmp]->column > this->column)
+					if (piece[cmp]->row == row && piece[cmp]->column <= column && piece[cmp]->column > this->column)
 						return false;
 				}
 				else
 				{
-					if (piece[cmp]->column >= row && piece[cmp]->row < this->row)
+					if (piece[cmp]->row == row && piece[cmp]->column >= column && piece[cmp]->column < this->column)
 						return false;
 				}
 			}

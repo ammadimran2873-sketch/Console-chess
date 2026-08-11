@@ -64,7 +64,7 @@ int Player2::findPiece(char srcColumn, int srcRow)
 bool Player2::isValideMove(char destColumn, int destRow, int i, vector<Piece*> player1Pieces)
 {
 	// check moves validity and path clearance
-	if (piece[i]->checkLegalMove(destColumn, destRow, player1Pieces))
+	if (piece[i]->isLegalMove(destColumn, destRow, piece ,player1Pieces))
 	{
 		if (piece[i]->isPathClear(destColumn, destRow, piece))
 		{
@@ -92,6 +92,11 @@ void Player2::update(char column, int row, int i, vector<Piece*>& player1Pieces)
 			SpecialRules::pawnPromotion('2', piece, i);
 		else if (piece[i]->enPassantMove)
 			SpecialRules::enPassant(player1Pieces, column, row);
+	}
+	else if (piece[i]->name == 'K')
+	{
+		if (piece[i]->castling)
+			SpecialRules::castling(piece, i);
 	}
 
 	// Piece Capture

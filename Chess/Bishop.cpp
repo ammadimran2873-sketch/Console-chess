@@ -10,7 +10,7 @@ Bishop::Bishop(char playerNo, char column, int row)
 	this->column = column;
 }
 
-bool Bishop::checkLegalMove(char column, int row, vector<Piece*> opponentPiece)
+bool Bishop::isLegalMove(char column, int row, vector<Piece*>piece, vector<Piece*> opponentPiece)
 {
 	if (row >= 1 && row <= 8 && column >= 'a' && column <= 'h')
 	{

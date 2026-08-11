@@ -10,7 +10,7 @@ Knight::Knight(char playerNo, char column, int row)
 	this->column = column;
 }
 
-bool Knight::checkLegalMove(char column, int row, vector<Piece*> opponentPiece)
+bool Knight::isLegalMove(char column, int row, vector<Piece*>piece, vector<Piece*> opponentPiece)
 {
 	if (row >= 1 && row <= 8 && column >= 'a' && column <= 'h')
 	{

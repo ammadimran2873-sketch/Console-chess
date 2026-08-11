@@ -5,6 +5,7 @@
 #include "Board.h"
 #include "Player1.h"
 #include "Player2.h"
+#include"SpecialRules.h"
 
 using namespace std;
 int main()
@@ -69,6 +70,8 @@ int main()
 		{
 			cout << '\n' << "..........Upper Piece Turn.........." << '\n';
 
+			if (SpecialRules::isCheck(player2.piece, player1.piece))
+				cout << '\n' << "you are in check!" << '\n';
 			cout << '\n' << "Enter the souce piece location: ";
 			cin >> srcColumn >> srcRow;
 			int i = player2.findPiece(srcColumn, srcRow);
@@ -101,9 +104,9 @@ int main()
 		}
 
 		// chess board
-		cout << setw(50) << setfill('-') << '-' << '\n';
+		cout << setw(40) << setfill('-') << '-' << '\n';
 		board.draw(player1.piece, player2.piece);
-		cout << setw(50) << setfill('-') << '-' << '\n';
+		cout << setw(40) << setfill('-') << '-' << '\n';
 
 		count = count + 1;
 		if (count == 12)

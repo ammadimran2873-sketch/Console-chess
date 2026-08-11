@@ -79,3 +79,66 @@ void SpecialRules::enPassant(vector<Piece*>& opponentPiece, char column, int row
 	}
 	
 }
+
+void SpecialRules::castling(vector<Piece*>& piece, int kingIndex)
+{
+	int rookIndex = 0;
+	bool found = 0;
+	// For Right Rook
+	if (piece[kingIndex]->column > 'e')
+	{
+		while (rookIndex < piece.size() && !found)
+		{
+			if (piece[rookIndex]->column == 'h' && piece[rookIndex]->row == piece[kingIndex]->row)
+				found = 1;
+			else
+				rookIndex = rookIndex + 1;
+		}
+		piece[rookIndex]->column = piece[kingIndex]->column - 1;
+	}
+	// For Left Rook
+	else
+	{
+		while (rookIndex < piece.size() && !found)
+		{
+			if (piece[rookIndex]->column == 'a' && piece[rookIndex]->row == piece[kingIndex]->row)
+				found = 1;
+			else
+				rookIndex = rookIndex + 1;
+		}
+		piece[rookIndex]->column = piece[kingIndex]->column + 1;
+	}
+}
+
+bool SpecialRules::isCheck(vector<Piece*> attackedPiece, vector<Piece*> attackingPiece)
+{
+	int kingIndex = findKingIndex(attackedPiece);
+	int i = 0;
+	while (i < attackingPiece.size())
+	{
+		if (attackingPiece[i]->isLegalMove(attackedPiece[kingIndex]->column, attackedPiece[kingIndex]->row, attackedPiece, attackingPiece))
+		{
+			if (attackingPiece[i]->isPathClear(attackedPiece[kingIndex]->column, attackedPiece[kingIndex]->row, attackedPiece))
+			{
+				if (attackingPiece[i]->isPathClear(attackedPiece[kingIndex]->column, attackedPiece[kingIndex]->row, attackingPiece))
+					return true;
+			}
+		}
+		i = i + 1;
+	}
+	return false;
+}
+
+int SpecialRules::findKingIndex(vector<Piece*> piece)
+{
+	int i = 0;
+	bool found = 0;
+	while (i < piece.size() && !found)
+	{
+		if (piece[i]->name == 'K' || piece[i]->name == 'k')
+			found = 1;
+		else
+			i = i + 1;
+	}
+	return i;
+}

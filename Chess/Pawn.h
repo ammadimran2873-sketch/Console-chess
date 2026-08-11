@@ -8,12 +8,11 @@ class Pawn :
     public Piece
 {
 private:
-    bool firstMove;
     bool enPassantpossible;
     bool enPassantMove;
 public:
     Pawn(char playerNo, char column, int row);
-    bool checkLegalMove(char column, int row, vector<Piece*> opponentPiece) override;
+    bool isLegalMove(char column, int row, vector<Piece*>piece, vector<Piece*> opponentPiece) override;
     bool isPathClear(char column, int row, vector<Piece*>piece) override;
     void updatePosition(char column, int row) override;
     char displayName() override;

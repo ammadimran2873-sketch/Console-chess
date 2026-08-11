@@ -8,9 +8,10 @@ Rook::Rook(char playerNo, char column, int row)
 		this->name = 'r';
 	this->row = row;
 	this->column = column;
+	firstMove = 1;
 }
 
-bool Rook::checkLegalMove(char column, int row, vector<Piece*> opponentPiece)
+bool Rook::isLegalMove(char column, int row, vector<Piece*>piece, vector<Piece*> opponentPiece)
 {
 	if (row >= 1 && row <= 8 && column >= 'a' && column <= 'h')
 	{
@@ -25,16 +26,16 @@ bool Rook::isPathClear(char column, int row, vector<Piece*> piece)
 	int cmp = 0;
 	while (cmp < piece.size())
 	{
-		if (piece[cmp]->column == column)
+		if (this->column == column && this->row != row)
 		{
 			if (row > this->row)
 			{
-				if (piece[cmp]->row <= row && piece[cmp]->row > this->row)
+				if (piece[cmp]->column == column && piece[cmp]->row <= row && piece[cmp]->row > this->row)
 					return false;
 			}
 			else
 			{
-				if (piece[cmp]->row >= row && piece[cmp]->row < this->row)
+				if (piece[cmp]->column == column && piece[cmp]->row >= row && piece[cmp]->row < this->row)
 					return false;
 			}
 		}
@@ -42,12 +43,12 @@ bool Rook::isPathClear(char column, int row, vector<Piece*> piece)
 		{
 			if (column > this->column)
 			{
-				if (piece[cmp]->column <= column && piece[cmp]->column > this->column)
+				if (piece[cmp]->row == row && piece[cmp]->column <= column && piece[cmp]->column > this->column)
 					return false;
 			}
 			else
 			{
-				if (piece[cmp]->column >= row && piece[cmp]->row < this->row)
+				if (piece[cmp]->row == row && piece[cmp]->column >= column && piece[cmp]->column < this->column)
 					return false;
 			}
 		}
@@ -58,6 +59,7 @@ bool Rook::isPathClear(char column, int row, vector<Piece*> piece)
 
 void Rook::updatePosition(char column, int row)
 {
+	firstMove = 0;
 	this->row = row;
 	this->column = column;
 }
