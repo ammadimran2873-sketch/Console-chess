@@ -26,9 +26,17 @@ bool Knight::isPathClear(char column, int row, vector<Piece*> piece)
 	int cmp = 0;
 	while (cmp < piece.size())
 	{
-		if ((piece[cmp]->row == row) && (piece[cmp]->column == column))
-			return false;
-		cmp = cmp + 1;
+		/* For Check because both player pieces are differnt
+		and ignore king becaue it would already be in the way */
+		if ((piece[cmp]->name == 'K' || piece[cmp]->name == 'k') &&
+			((this->name >= 97 && piece[cmp]->name < 97) || (this->name < 97 && piece[cmp]->name >= 97)))
+			cmp = cmp + 1;
+		else
+		{
+			if ((piece[cmp]->row == row) && (piece[cmp]->column == column))
+				return false;
+			cmp = cmp + 1;
+		}
 	}
 	return true;
 }

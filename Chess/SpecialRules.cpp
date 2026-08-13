@@ -116,12 +116,14 @@ bool SpecialRules::isCheck(vector<Piece*> attackedPiece, vector<Piece*> attackin
 	int i = 0;
 	while (i < attackingPiece.size())
 	{
-		if (attackingPiece[i]->isLegalMove(attackedPiece[kingIndex]->column, attackedPiece[kingIndex]->row, attackedPiece, attackingPiece))
+		if (attackingPiece[i]->isLegalMove(attackedPiece[kingIndex]->column, attackedPiece[kingIndex]->row, attackingPiece, attackedPiece))
 		{
-			if (attackingPiece[i]->isPathClear(attackedPiece[kingIndex]->column, attackedPiece[kingIndex]->row, attackedPiece))
+			if (attackingPiece[i]->isPathClear(attackedPiece[kingIndex]->column, attackedPiece[kingIndex]->row, attackingPiece))
 			{
-				if (attackingPiece[i]->isPathClear(attackedPiece[kingIndex]->column, attackedPiece[kingIndex]->row, attackingPiece))
+				if (attackingPiece[i]->isPathClear(attackedPiece[kingIndex]->column, attackedPiece[kingIndex]->row, attackedPiece))
+				{
 					return true;
+				}
 			}
 		}
 		i = i + 1;

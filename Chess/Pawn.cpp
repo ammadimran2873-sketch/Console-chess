@@ -132,9 +132,17 @@ bool Pawn::isPathClear(char column, int row, vector<Piece*>piece)
     {
         while (cmp < piece.size())
         {
-            if ((piece[cmp]->column == column) && (piece[cmp]->row <= row && piece[cmp]->row > this->row))
-                return false;
+            /* For Check because both player pieces are differnt
+            and ignore king becaue it would already be in the way */
+            if ((piece[cmp]->name == 'K' || piece[cmp]->name == 'k') &&
+                ((this->name >= 97 && piece[cmp]->name < 97) || (this->name < 97 && piece[cmp]->name >= 97)))
                 cmp = cmp + 1;
+            else
+            {
+                if ((piece[cmp]->column == column) && (piece[cmp]->row <= row && piece[cmp]->row > this->row))
+                    return false;
+                cmp = cmp + 1;
+            }
         }
         return true;
     }
@@ -142,9 +150,18 @@ bool Pawn::isPathClear(char column, int row, vector<Piece*>piece)
     {
         while (cmp < piece.size())
         {
-            if ((piece[cmp]->column == column) && (piece[cmp]->row >= row && piece[cmp]->row < this->row))
-                return false;
-            cmp = cmp + 1;
+            /* For Check because both player pieces are differnt
+             and ignore king becaue it would already be in the way */
+            if ((piece[cmp]->name == 'K' || piece[cmp]->name == 'k') &&
+                ((this->name >= 97 && piece[cmp]->name < 97) || (this->name < 97 && piece[cmp]->name >= 97)))
+                cmp = cmp + 1;
+            else
+            {
+                if ((piece[cmp]->column == column) && (piece[cmp]->row >= row && piece[cmp]->row < this->row))
+                    return false;
+                cmp = cmp + 1;
+
+            }
         }
         return true;
     }

@@ -28,12 +28,28 @@ int main()
 	bool end = 0;
 	int count = 0;
 	bool turn = 0;
-
+	bool check = 0;
+	bool moveUnderCheck = 0;
 	while (!end)
 	{
 		if (turn == 0)
 		{
 			cout << '\n' << "..........Lower Piece Turn.........." << '\n';
+
+			
+			check = SpecialRules::isCheck(player1.piece, player2.piece);
+			if (check)
+			{
+				if (moveUnderCheck)
+					cout << '\n' << "Can't Move!";
+				cout << '\n' << "Your King is in Check!" << '\n';
+				moveUnderCheck = 1;
+			}
+			else
+			{
+				moveUnderCheck = 0;
+				turn = 1;
+			}
 
 			cout << '\n' << "Enter the source piece location: ";
 			cin >> srcColumn >> srcRow;
@@ -63,15 +79,26 @@ int main()
 				cout << "Enter the destination piece location: ";
 				cin >> destColumn >> destRow;
 			}
-			player1.update(destColumn, destRow, i, player2.piece);
-			turn = 1;
+			player1.update(destColumn, destRow, i, player2.piece, turn);
 		}
 		else
 		{
 			cout << '\n' << "..........Upper Piece Turn.........." << '\n';
 
-			if (SpecialRules::isCheck(player2.piece, player1.piece))
-				cout << '\n' << "you are in check!" << '\n';
+			check = SpecialRules::isCheck(player2.piece, player1.piece);
+			if (check)
+			{
+				if (moveUnderCheck)
+					cout << '\n' << "Can't Move!";
+				cout << '\n' << "Your King is in Check!" << '\n';
+				moveUnderCheck = 1;
+			}
+			else
+			{
+				moveUnderCheck = 0;
+				turn = 0;
+			}
+
 			cout << '\n' << "Enter the souce piece location: ";
 			cin >> srcColumn >> srcRow;
 			int i = player2.findPiece(srcColumn, srcRow);
@@ -99,8 +126,7 @@ int main()
 				cout << "Enter the destination piece location: ";
 				cin >> destColumn >> destRow;
 			}
-			player2.update(destColumn, destRow, i, player1.piece);
-			turn = 0;
+			player2.update(destColumn, destRow, i, player1.piece, turn);
 		}
 
 		// chess board

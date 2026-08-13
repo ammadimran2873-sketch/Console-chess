@@ -83,9 +83,52 @@ bool Player1::isValideMove(char destColumn, int destRow, int i, vector<Piece*> p
 	}
 }
 
-void Player1::update(char column, int row, int i, vector<Piece*>& player2Pieces)
+void Player1::update(char column, int row, int i, vector<Piece*>& player2Pieces, bool& turn)
 {
+	char prevColumn = piece[i]->column;
+	int prevRow = piece[i]->row;
 	piece[i]->updatePosition(column,row);
+
+	// Piece Capture
+	int cmp = 0;
+	bool found = 0;
+	int erasedPieceRow;
+	char erasedPieceColumn;
+	char erasedPieceName;
+	while (!found && cmp < player2Pieces.size())
+	{
+		if (player2Pieces[cmp]->column == column && player2Pieces[cmp]->row == row)
+		{
+			found = 1;
+			erasedPieceColumn = column;
+			erasedPieceRow = row;
+			erasedPieceName = player2Pieces[cmp]->name;
+			player2Pieces.erase(player2Pieces.begin() + cmp);
+		}
+		else
+			cmp = cmp + 1;
+	}
+
+	// Check
+	if (SpecialRules::isCheck(piece, player2Pieces))
+	{
+		piece[i]->updatePosition(prevColumn, prevRow);
+		if (found)
+		{
+			if (erasedPieceName == 'p')
+				player2Pieces.push_back(new Pawn('2', erasedPieceColumn, erasedPieceRow));
+			else if (erasedPieceName == 'q')
+				player2Pieces.push_back(new Queen('2', erasedPieceColumn, erasedPieceRow));
+			else if (erasedPieceName == 'n')
+				player2Pieces.push_back(new Knight('2', erasedPieceColumn, erasedPieceRow));
+			else if (erasedPieceName == 'b')
+				player2Pieces.push_back(new Pawn('2', erasedPieceColumn, erasedPieceRow));
+		}
+		return;
+	}
+	else
+		turn = 1;
+
 	if (piece[i]->name == 'P')
 	{
 		if (row == 8)
@@ -103,19 +146,5 @@ void Player1::update(char column, int row, int i, vector<Piece*>& player2Pieces)
 			SpecialRules::castling(piece, i);
 			piece[i]->castling = 0;
 		}
-	}
-
-	// Piece Capture
-	int cmp = 0;
-	bool found = 0;
-	while (!found && cmp < player2Pieces.size())
-	{
-		if (player2Pieces[cmp]->column == column && player2Pieces[cmp]->row == row)
-		{
-			found = 1;
-			player2Pieces.erase(player2Pieces.begin() + cmp);
-		}
-		else
-			cmp = cmp + 1;
 	}
 }

@@ -27,69 +27,86 @@ bool Queen::isPathClear(char column, int row, vector<Piece*> piece)
 	{
 		while (cmp < piece.size())
 		{
-			if (abs(piece[cmp]->row - row) == abs(piece[cmp]->column - column))
+			/* For Check because both player pieces are differnt
+			and ignore king becaue it would already be in the way */
+			if ((piece[cmp]->name == 'K' || piece[cmp]->name == 'k') &&
+				((this->name >= 97 && piece[cmp]->name < 97) || (this->name < 97 && piece[cmp]->name >= 97)))
+				cmp = cmp + 1;
+			else
 			{
-				if (column < this->column)
+				if (abs(piece[cmp]->row - row) == abs(piece[cmp]->column - column))
 				{
-					if (row > this->row)
+					if (column < this->column)
 					{
-						if ((piece[cmp]->row <= row) && (piece[cmp]->column >= column) && (piece[cmp]->column < this->column))
-							return false;
+						if (row > this->row)
+						{
+							if ((piece[cmp]->row <= row) && (piece[cmp]->column >= column) && (piece[cmp]->column < this->column))
+								return false;
+						}
+						else
+						{
+							if ((piece[cmp]->row >= row) && (piece[cmp]->column >= column) && (piece[cmp]->column < this->column))
+								return false;
+						}
 					}
 					else
 					{
-						if ((piece[cmp]->row >= row) && (piece[cmp]->column >= column) && (piece[cmp]->column < this->column))
-							return false;
+						if (row > this->row)
+						{
+							if ((piece[cmp]->row <= row) && (piece[cmp]->column <= column) && (piece[cmp]->column > this->column))
+								return false;
+						}
+						else
+						{
+							if ((piece[cmp]->row >= row) && (piece[cmp]->column <= column) && (piece[cmp]->column > this->column))
+								return false;
+						}
 					}
 				}
-				else
-				{
-					if (row > this->row)
-					{
-						if ((piece[cmp]->row <= row) && (piece[cmp]->column <= column) && (piece[cmp]->column > this->column))
-							return false;
-					}
-					else
-					{
-						if ((piece[cmp]->row >= row) && (piece[cmp]->column <= column) && (piece[cmp]->column > this->column))
-							return false;
-					}
-				}
+				cmp = cmp + 1;
 			}
-			cmp = cmp + 1;
+			
 		}
 	}
 	else
 	{
 		while (cmp < piece.size())
 		{
-			if (this->column == column && this->row != row)
-			{
-				if (row > this->row)
-				{
-					if (piece[cmp]->column == column && piece[cmp]->row <= row && piece[cmp]->row > this->row)
-						return false;
-				}
-				else
-				{
-					if (piece[cmp]->column == column && piece[cmp]->row >= row && piece[cmp]->row < this->row)
-						return false;
-				}
-			}
+			/* For Check because both player pieces are differnt
+			becaue it would already be in the way */
+			if ((piece[cmp]->name == 'K' || piece[cmp]->name == 'k') &&
+				((this->name >= 97 && piece[cmp]->name < 97) || (this->name < 97 && piece[cmp]->name >= 97)))
+				cmp = cmp + 1;
 			else
 			{
-				if (column > this->column)
+				if (this->column == column && this->row != row)
 				{
-					if (piece[cmp]->row == row && piece[cmp]->column <= column && piece[cmp]->column > this->column)
-						return false;
+					if (row > this->row)
+					{
+						if (piece[cmp]->column == column && piece[cmp]->row <= row && piece[cmp]->row > this->row)
+							return false;
+					}
+					else
+					{
+						if (piece[cmp]->column == column && piece[cmp]->row >= row && piece[cmp]->row < this->row)
+							return false;
+					}
 				}
 				else
 				{
-					if (piece[cmp]->row == row && piece[cmp]->column >= column && piece[cmp]->column < this->column)
-						return false;
+					if (column > this->column)
+					{
+						if (piece[cmp]->row == row && piece[cmp]->column <= column && piece[cmp]->column > this->column)
+							return false;
+					}
+					else
+					{
+						if (piece[cmp]->row == row && piece[cmp]->column >= column && piece[cmp]->column < this->column)
+							return false;
+					}
 				}
+				cmp = cmp + 1;
 			}
-			cmp = cmp + 1;
 		}
 	}
 	return true;

@@ -83,33 +83,70 @@ bool Player2::isValideMove(char destColumn, int destRow, int i, vector<Piece*> p
 	}
 }
 
-void Player2::update(char column, int row, int i, vector<Piece*>& player1Pieces)
+void Player2::update(char column, int row, int i, vector<Piece*>& player1Pieces, bool& turn)
 {
+	char prevColumn = piece[i]->column;
+	int prevRow = piece[i]->row;
 	piece[i]->updatePosition(column, row);
-	if (piece[i]->name == 'p')
-	{
-		if (row == 1)
-			SpecialRules::pawnPromotion('2', piece, i);
-		else if (piece[i]->enPassantMove)
-			SpecialRules::enPassant(player1Pieces, column, row);
-	}
-	else if (piece[i]->name == 'K')
-	{
-		if (piece[i]->castling)
-			SpecialRules::castling(piece, i);
-	}
-
+	
 	// Piece Capture
 	int cmp = 0;
 	bool found = 0;
+	int erasedPieceRow;
+	char erasedPieceColumn;
+	char erasedPieceName;
 	while (!found && cmp < player1Pieces.size())
 	{
 		if (player1Pieces[cmp]->column == column && player1Pieces[cmp]->row == row)
 		{
 			found = 1;
+			erasedPieceColumn = column;
+			erasedPieceRow = row;
+			erasedPieceName = player1Pieces[cmp]->name;
 			player1Pieces.erase(player1Pieces.begin() + cmp);
 		}
 		else
 			cmp = cmp + 1;
 	}
+
+	// Check
+	if (SpecialRules::isCheck(piece, player1Pieces))
+	{
+		piece[i]->updatePosition(prevColumn, prevRow);
+		if (found)
+		{
+			if (erasedPieceName == 'P')
+				player1Pieces.push_back(new Pawn('1', erasedPieceColumn, erasedPieceRow));
+			else if (erasedPieceName == 'Q')
+				player1Pieces.push_back(new Queen('1', erasedPieceColumn, erasedPieceRow));
+			else if (erasedPieceName == 'N')
+				player1Pieces.push_back(new Knight('1', erasedPieceColumn, erasedPieceRow));
+			else if (erasedPieceName == 'B')
+				player1Pieces.push_back(new Pawn('1', erasedPieceColumn, erasedPieceRow));
+		}
+		return;
+	}
+	else
+		turn = 0;
+
+	if (piece[i]->name == 'P')
+	{
+		if (row == 8)
+			SpecialRules::pawnPromotion('2', piece, i);
+		else if (piece[i]->enPassantMove)
+		{
+			SpecialRules::enPassant(player1Pieces, column, row);
+			piece[i]->enPassantMove = 0;
+		}
+	}
+	else if (piece[i]->name == 'K')
+	{
+		if (piece[i]->castling)
+		{
+			SpecialRules::castling(piece, i);
+			piece[i]->castling = 0;
+		}
+	}
+
+	
 }
