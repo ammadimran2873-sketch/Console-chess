@@ -83,7 +83,7 @@ bool Player1::isValideMove(char destColumn, int destRow, int i, vector<Piece*> p
 	}
 }
 
-void Player1::update(char column, int row, int i, vector<Piece*>& player2Pieces, bool& turn)
+void Player1::update(char column, int row, int i, vector<Piece*>& player2Pieces, char& playerTurn, bool& moveUnderCheck, bool& check)
 {
 	char prevColumn = piece[i]->column;
 	int prevRow = piece[i]->row;
@@ -124,10 +124,17 @@ void Player1::update(char column, int row, int i, vector<Piece*>& player2Pieces,
 			else if (erasedPieceName == 'b')
 				player2Pieces.push_back(new Pawn('2', erasedPieceColumn, erasedPieceRow));
 		}
+		playerTurn = '1';
+		check = 1;
+		moveUnderCheck = 1;
 		return;
 	}
 	else
-		turn = 1;
+	{
+		playerTurn = '2';
+		check = 0;
+		moveUnderCheck = 0;
+	}
 
 	if (piece[i]->name == 'P')
 	{

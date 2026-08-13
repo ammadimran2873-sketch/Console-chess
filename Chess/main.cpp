@@ -27,28 +27,28 @@ int main()
 	int srcRow, destRow;
 	bool end = 0;
 	int count = 0;
-	bool turn = 0;
+	char playerTurn = '1';
 	bool check = 0;
 	bool moveUnderCheck = 0;
 	while (!end)
 	{
-		if (turn == 0)
+		if (playerTurn == '1')
 		{
 			cout << '\n' << "..........Lower Piece Turn.........." << '\n';
 
-			
-			check = SpecialRules::isCheck(player1.piece, player2.piece);
+			if(!check)
+				check = SpecialRules::isCheck(player1.piece, player2.piece);
 			if (check)
 			{
 				if (moveUnderCheck)
 					cout << '\n' << "Can't Move!";
-				cout << '\n' << "Your King is in Check!" << '\n';
+				cout << '\n' << "Your King is or will be in Check!" << '\n';
 				moveUnderCheck = 1;
 			}
 			else
 			{
 				moveUnderCheck = 0;
-				turn = 1;
+				playerTurn = '2';
 			}
 
 			cout << '\n' << "Enter the source piece location: ";
@@ -79,24 +79,24 @@ int main()
 				cout << "Enter the destination piece location: ";
 				cin >> destColumn >> destRow;
 			}
-			player1.update(destColumn, destRow, i, player2.piece, turn);
+			player1.update(destColumn, destRow, i, player2.piece, playerTurn, moveUnderCheck, check);
 		}
 		else
 		{
 			cout << '\n' << "..........Upper Piece Turn.........." << '\n';
-
-			check = SpecialRules::isCheck(player2.piece, player1.piece);
+			if(!check)
+				check = SpecialRules::isCheck(player2.piece, player1.piece);
 			if (check)
 			{
 				if (moveUnderCheck)
 					cout << '\n' << "Can't Move!";
-				cout << '\n' << "Your King is in Check!" << '\n';
+				cout << '\n' << "Your King is or will be in Check!" << '\n';
 				moveUnderCheck = 1;
 			}
 			else
 			{
 				moveUnderCheck = 0;
-				turn = 0;
+				playerTurn = '1';
 			}
 
 			cout << '\n' << "Enter the souce piece location: ";
@@ -126,7 +126,7 @@ int main()
 				cout << "Enter the destination piece location: ";
 				cin >> destColumn >> destRow;
 			}
-			player2.update(destColumn, destRow, i, player1.piece, turn);
+			player2.update(destColumn, destRow, i, player1.piece, playerTurn, moveUnderCheck, check);
 		}
 
 		// chess board
