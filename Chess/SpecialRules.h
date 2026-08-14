@@ -14,6 +14,7 @@ public:
 	static void enPassant(vector<Piece*>& opponentPiece, char column, int row);
 	static void castling(vector<Piece*>& piece, int kingIndex);
 	static bool isCheck(vector<Piece*> attackedPiece, vector<Piece*> attackingPiece);
-	static int findKingIndex(vector<Piece*> piece);
+	static bool isCheckmate(vector<Piece*>& attackedPiece, vector<Piece*>& attackingPiece);
+	static bool isCheck(vector<Piece*> attackedPiece, vector<Piece*> attackingPiece, int& i);
 };
 

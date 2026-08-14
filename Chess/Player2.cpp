@@ -6,6 +6,7 @@
 #include"Queen.h"
 #include"King.h"
 #include"SpecialRules.h"
+#include"Math.h"
 
 Player2::Player2()
 {
@@ -66,7 +67,7 @@ bool Player2::isValideMove(char destColumn, int destRow, int i, vector<Piece*> p
 	// check moves validity and path clearance
 	if (piece[i]->isLegalMove(destColumn, destRow, piece ,player1Pieces))
 	{
-		if (piece[i]->isPathClear(destColumn, destRow, piece))
+		if (piece[i]->isPathClear(destColumn, destRow, piece, -1))
 		{
 			return true;
 		}
@@ -87,42 +88,41 @@ void Player2::update(char column, int row, int i, vector<Piece*>& player1Pieces,
 {
 	char prevColumn = piece[i]->column;
 	int prevRow = piece[i]->row;
+	// Check For catling because it moves 2 squares and neither square should be under attack
+	if (piece[i]->name == 'K')
+	{
+		if (piece[i]->castling)
+		{
+			if (column > piece[i]->column)
+				piece[i]->updatePosition(column - 1, row);
+			else
+				piece[i]->updatePosition(column + 1, row);
+			if (SpecialRules::isCheck(piece, player1Pieces))
+			{
+				piece[i]->updatePosition(prevColumn, prevRow);
+				playerTurn = '1';
+				check = 1;
+				moveUnderCheck = 1;
+				return;
+			}
+			piece[i]->updatePosition(prevColumn, prevRow);
+
+		}
+	}
+
 	piece[i]->updatePosition(column, row);
 	
 	// Piece Capture
-	int cmp = 0;
-	bool found = 0;
-	int erasedPieceRow;
-	char erasedPieceColumn;
-	char erasedPieceName;
-	while (!found && cmp < player1Pieces.size())
-	{
-		if (player1Pieces[cmp]->column == column && player1Pieces[cmp]->row == row)
-		{
-			found = 1;
-			erasedPieceColumn = column;
-			erasedPieceRow = row;
-			erasedPieceName = player1Pieces[cmp]->name;
-			player1Pieces.erase(player1Pieces.begin() + cmp);
-		}
-		else
-			cmp = cmp + 1;
-	}
-
+	char erasedPieceName = 0;
+	bool pieceCapture = Math::isPieceCapture(column, row, player1Pieces, erasedPieceName);
+	
 	// Check
 	if (SpecialRules::isCheck(piece, player1Pieces))
 	{
 		piece[i]->updatePosition(prevColumn, prevRow);
-		if (found)
+		if (pieceCapture)
 		{
-			if (erasedPieceName == 'P')
-				player1Pieces.push_back(new Pawn('1', erasedPieceColumn, erasedPieceRow));
-			else if (erasedPieceName == 'Q')
-				player1Pieces.push_back(new Queen('1', erasedPieceColumn, erasedPieceRow));
-			else if (erasedPieceName == 'N')
-				player1Pieces.push_back(new Knight('1', erasedPieceColumn, erasedPieceRow));
-			else if (erasedPieceName == 'B')
-				player1Pieces.push_back(new Pawn('1', erasedPieceColumn, erasedPieceRow));
+			Math::createErasedPiece(player1Pieces, column, row, erasedPieceName);
 		}
 		playerTurn = '2';
 		check = 1;

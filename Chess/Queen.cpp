@@ -20,7 +20,7 @@ bool Queen::isLegalMove(char column, int row, vector<Piece*>piece, vector<Piece*
 	return false;
 }
 
-bool Queen::isPathClear(char column, int row, vector<Piece*> piece)
+bool Queen::isPathClear(char column, int row, vector<Piece*> piece, int ignorePieceIndex)
 {
 	int cmp = 0;
 	if (abs(this->row - row) == abs(this->column - column))
@@ -28,9 +28,10 @@ bool Queen::isPathClear(char column, int row, vector<Piece*> piece)
 		while (cmp < piece.size())
 		{
 			/* For Check because both player pieces are differnt
-			and ignore king becaue it would already be in the way */
-			if ((piece[cmp]->name == 'K' || piece[cmp]->name == 'k') &&
-				((this->name >= 97 && piece[cmp]->name < 97) || (this->name < 97 && piece[cmp]->name >= 97)))
+			and ignore king becaue it would already be in the way and ignored piece
+			is for possible blocking for Checkmate*/
+			if (((piece[cmp]->name == 'K' || piece[cmp]->name == 'k') && ((this->name >= 97 && piece[cmp]->name < 97) || (this->name < 97 && piece[cmp]->name >= 97)))
+				|| cmp == ignorePieceIndex)
 				cmp = cmp + 1;
 			else
 			{
@@ -73,9 +74,10 @@ bool Queen::isPathClear(char column, int row, vector<Piece*> piece)
 		while (cmp < piece.size())
 		{
 			/* For Check because both player pieces are differnt
-			becaue it would already be in the way */
-			if ((piece[cmp]->name == 'K' || piece[cmp]->name == 'k') &&
-				((this->name >= 97 && piece[cmp]->name < 97) || (this->name < 97 && piece[cmp]->name >= 97)))
+			and ignore king becaue it would already be in the way and ignored piece
+			is for possible blocking for Checkmate*/
+			if (((piece[cmp]->name == 'K' || piece[cmp]->name == 'k') && ((this->name >= 97 && piece[cmp]->name < 97) || (this->name < 97 && piece[cmp]->name >= 97)))
+				|| cmp == ignorePieceIndex)
 				cmp = cmp + 1;
 			else
 			{

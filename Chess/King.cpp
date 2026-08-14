@@ -1,5 +1,6 @@
 #include "King.h"
 #include "SpecialRules.h"
+#include"Math.h"
 
 King::King(char playerNo, char column, int row)
 {
@@ -17,7 +18,8 @@ bool King::isLegalMove(char column, int row, vector<Piece*>piece, vector<Piece*>
 {
 	if (row >= 1 && row <= 8 && column >= 'a' && column <= 'h')
 	{
-		int opponentKingIndex = SpecialRules::findKingIndex(opponentPiece);
+		// For Opponent King Case
+		int opponentKingIndex = Math::findKingIndex(opponentPiece);
 		if ((row + 1 == opponentPiece[opponentKingIndex]->row && (column + 1 == opponentPiece[opponentKingIndex]->column || column - 1 == opponentPiece[opponentKingIndex]->column || column == opponentPiece[opponentKingIndex]->column)) ||
 			(row - 1 == opponentPiece[opponentKingIndex]->row && (column + 1 == opponentPiece[opponentKingIndex]->column || column - 1 == opponentPiece[opponentKingIndex]->column || column == opponentPiece[opponentKingIndex]->column)) ||
 			(row == opponentPiece[opponentKingIndex]->row && (column + 1 == opponentPiece[opponentKingIndex]->column || column - 1 == opponentPiece[opponentKingIndex]->column)))
@@ -41,8 +43,12 @@ bool King::isLegalMove(char column, int row, vector<Piece*>piece, vector<Piece*>
 					if ((piece[i]->name == 'R' || piece[i]->name == 'r'))
 					{
 						count = count + 1;
-						if ((piece[i]->column >  this->column && piece[i]->firstMove == 1))
+						if ((piece[i]->column > this->column && piece[i]->firstMove == 1))
+						{
+							if (SpecialRules::isCheck(piece, opponentPiece))
+								return false;
 							return true;
+						}
 					}
 					i = i + 1;
 				}
@@ -55,7 +61,11 @@ bool King::isLegalMove(char column, int row, vector<Piece*>piece, vector<Piece*>
 					{
 						count = count + 1;
 						if ((piece[i]->column < this->column && piece[i]->firstMove == 1))
+						{
+							if (SpecialRules::isCheck(piece, opponentPiece))
+								return false;
 							return true;
+						}
 					}
 					i = i + 1;
 				}
@@ -65,7 +75,7 @@ bool King::isLegalMove(char column, int row, vector<Piece*>piece, vector<Piece*>
 	return false;
 }
 
-bool King::isPathClear(char column, int row, vector<Piece*> piece)
+bool King::isPathClear(char column, int row, vector<Piece*> piece, int ignorePieceIndex)
 {
 	int cmp = 0;
 	

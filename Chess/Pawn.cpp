@@ -125,7 +125,7 @@ bool Pawn::isLegalMove(char column, int row, vector<Piece*>piece, vector<Piece*>
     return false;
 }
 
-bool Pawn::isPathClear(char column, int row, vector<Piece*>piece) 
+bool Pawn::isPathClear(char column, int row, vector<Piece*>piece, int ignorePieceIndex)
 {
     int cmp = 0;
     if (this->name == 'P')
@@ -133,9 +133,10 @@ bool Pawn::isPathClear(char column, int row, vector<Piece*>piece)
         while (cmp < piece.size())
         {
             /* For Check because both player pieces are differnt
-            and ignore king becaue it would already be in the way */
-            if ((piece[cmp]->name == 'K' || piece[cmp]->name == 'k') &&
-                ((this->name >= 97 && piece[cmp]->name < 97) || (this->name < 97 && piece[cmp]->name >= 97)))
+            and ignore king becaue it would already be in the way and ignored piece
+            is for possible blocking for Checkmate*/
+            if (((piece[cmp]->name == 'K' || piece[cmp]->name == 'k') && ((this->name >= 97 && piece[cmp]->name < 97) || (this->name < 97 && piece[cmp]->name >= 97))) 
+                || cmp == ignorePieceIndex)
                 cmp = cmp + 1;
             else
             {
@@ -151,9 +152,10 @@ bool Pawn::isPathClear(char column, int row, vector<Piece*>piece)
         while (cmp < piece.size())
         {
             /* For Check because both player pieces are differnt
-             and ignore king becaue it would already be in the way */
-            if ((piece[cmp]->name == 'K' || piece[cmp]->name == 'k') &&
-                ((this->name >= 97 && piece[cmp]->name < 97) || (this->name < 97 && piece[cmp]->name >= 97)))
+            and ignore king becaue it would already be in the way and ignored piece
+            is for possible blocking for Checkmate*/
+            if (((piece[cmp]->name == 'K' || piece[cmp]->name == 'k') && ((this->name >= 97 && piece[cmp]->name < 97) || (this->name < 97 && piece[cmp]->name >= 97)))
+                || cmp == ignorePieceIndex)
                 cmp = cmp + 1;
             else
             {

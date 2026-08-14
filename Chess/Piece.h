@@ -23,7 +23,7 @@ public:
 public:
 	Piece();
 	virtual bool isLegalMove(char column, int row, vector<Piece*>piece, vector<Piece*> opponentPiece) = 0;
-	virtual bool isPathClear(char column, int row, vector<Piece*>piece) = 0;
+	virtual bool isPathClear(char column, int row, vector<Piece*>piece, int ignorePieceIndex) = 0;
 	virtual void updatePosition(char column, int row) = 0;
 	virtual char displayName() = 0;
 };
