@@ -22,19 +22,19 @@ A fully functional **2-player console-based Chess game** developed in **C++** us
 
 ## Screenshots
 
-### Chess Board
+### Chess Board 🎮
 
 ![Chess Board](game-play/chessBoard.png)
 
 
 
-### Check
+### Check 👑
 
 ![Check](game-play/check.png)
 
 
 
-### Checkmate
+### Checkmate 🏁
 
 ![Checkmate](game-play/checkmate.png)
 
