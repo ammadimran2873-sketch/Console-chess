@@ -45,8 +45,6 @@ bool King::isLegalMove(char column, int row, vector<Piece*>piece, vector<Piece*>
 						count = count + 1;
 						if ((piece[i]->column > this->column && piece[i]->firstMove == 1))
 						{
-							if (SpecialRules::isCheck(piece, opponentPiece))
-								return false;
 							return true;
 						}
 					}
@@ -62,8 +60,6 @@ bool King::isLegalMove(char column, int row, vector<Piece*>piece, vector<Piece*>
 						count = count + 1;
 						if ((piece[i]->column < this->column && piece[i]->firstMove == 1))
 						{
-							if (SpecialRules::isCheck(piece, opponentPiece))
-								return false;
 							return true;
 						}
 					}
@@ -77,8 +73,9 @@ bool King::isLegalMove(char column, int row, vector<Piece*>piece, vector<Piece*>
 
 bool King::isPathClear(char column, int row, vector<Piece*> piece, int ignorePieceIndex)
 {
+
 	int cmp = 0;
-	
+	castling = 0;
 	// For Castling
 	if (this->column + 2 == column || this->column - 2 == column)
 	{

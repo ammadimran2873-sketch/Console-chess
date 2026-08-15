@@ -95,6 +95,7 @@ void Player1::update(char column, int row, int i, vector<Piece*>& player2Pieces,
 {
 	char prevColumn = piece[i]->column;
 	int prevRow = piece[i]->row;
+	bool prevFirstMove = piece[i]->firstMove;
 
 	// To reset the En Passant
 	for (int j = 0; j < player2Pieces.size(); j++)
@@ -116,6 +117,16 @@ void Player1::update(char column, int row, int i, vector<Piece*>& player2Pieces,
 	{
 		if (piece[i]->castling)
 		{
+			if (SpecialRules::isCheck(piece, player2Pieces))
+			{
+				piece[i]->updatePosition(prevColumn, prevRow);
+				piece[i]->firstMove = prevFirstMove;
+				piece[i]->castling = 0;
+				playerTurn = '1';
+				check = 1;
+				moveUnderCheck = 1;
+				return;
+			}
 			if (column > piece[i]->column)
 				piece[i]->updatePosition(column - 1, row);
 			else
@@ -123,6 +134,8 @@ void Player1::update(char column, int row, int i, vector<Piece*>& player2Pieces,
 			if (SpecialRules::isCheck(piece, player2Pieces))
 			{
 				piece[i]->updatePosition(prevColumn, prevRow);
+				piece[i]->firstMove = prevFirstMove;
+				piece[i]->castling = 0;
 				playerTurn = '1';
 				check = 1;
 				moveUnderCheck = 1;
@@ -142,6 +155,7 @@ void Player1::update(char column, int row, int i, vector<Piece*>& player2Pieces,
 	if (SpecialRules::isCheck(piece, player2Pieces))
 	{
 		piece[i]->updatePosition(prevColumn, prevRow);
+		piece[i]->firstMove = prevFirstMove;
 		if (pieceCapture)
 		{
 			Math::createErasedPiece(player2Pieces, column, row, erasedPieceName);

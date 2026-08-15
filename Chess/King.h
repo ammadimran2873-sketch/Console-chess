@@ -7,7 +7,7 @@ using namespace std;
 class King :
     public Piece
 {
-
+    
 public:
     King(char playerNo, char column, int row);
     bool isLegalMove(char column, int row, vector<Piece*>piece, vector<Piece*> opponentPiece) override;

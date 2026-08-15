@@ -95,27 +95,38 @@ void Player2::update(char column, int row, int i, vector<Piece*>& player1Pieces,
 {
 	char prevColumn = piece[i]->column;
 	int prevRow = piece[i]->row;
+	bool prevFirstMove = piece[i]->firstMove;
 
 	// To reset the En Passant
 	for (int j = 0; j < player1Pieces.size(); j++)
 	{
-		if (player1Pieces[j]->name == 'p')
+		if (player1Pieces[j]->name == 'P')
 		{
 			player1Pieces[j]->enPassantpossible = 0;
 			player1Pieces[j]->pawnTwoSquareMove = 0;
 		}
 	}
-	if (piece[i]->name == 'P')
+	if (piece[i]->name == 'p')
 	{
 		if (piece[i]->pawnTwoSquareMove)
 			piece[i]->enPassantpossible = 1;
 	}
 	
 	// Check For catling because it moves 2 squares and neither square should be under attack
-	if (piece[i]->name == 'K')
+	if (piece[i]->name == 'k')
 	{
 		if (piece[i]->castling)
 		{
+			if (SpecialRules::isCheck(piece, player1Pieces))
+			{
+				piece[i]->updatePosition(prevColumn, prevRow);
+				piece[i]->firstMove = prevFirstMove;
+				piece[i]->castling = 0;
+				playerTurn = '2';
+				check = 1;
+				moveUnderCheck = 1;
+				return;
+			}
 			if (column > piece[i]->column)
 				piece[i]->updatePosition(column - 1, row);
 			else
@@ -123,7 +134,9 @@ void Player2::update(char column, int row, int i, vector<Piece*>& player1Pieces,
 			if (SpecialRules::isCheck(piece, player1Pieces))
 			{
 				piece[i]->updatePosition(prevColumn, prevRow);
-				playerTurn = '1';
+				piece[i]->firstMove = prevFirstMove;
+				piece[i]->castling = 0;
+				playerTurn = '2';
 				check = 1;
 				moveUnderCheck = 1;
 				return;
@@ -143,6 +156,8 @@ void Player2::update(char column, int row, int i, vector<Piece*>& player1Pieces,
 	if (SpecialRules::isCheck(piece, player1Pieces))
 	{
 		piece[i]->updatePosition(prevColumn, prevRow);
+		piece[i]->firstMove = prevFirstMove;
+		piece[i]->castling = 0;
 		if (pieceCapture)
 		{
 			Math::createErasedPiece(player1Pieces, column, row, erasedPieceName);
@@ -159,7 +174,7 @@ void Player2::update(char column, int row, int i, vector<Piece*>& player1Pieces,
 		moveUnderCheck = 0;
 	}
 
-	if (piece[i]->name == 'P')
+	if (piece[i]->name == 'p')
 	{
 		if (row == 8)
 			SpecialRules::pawnPromotion('2', piece, i);
@@ -169,8 +184,9 @@ void Player2::update(char column, int row, int i, vector<Piece*>& player1Pieces,
 			piece[i]->enPassantMove = 0;
 		}
 	}
-	else if (piece[i]->name == 'K')
+	else if (piece[i]->name == 'k')
 	{
+		cout << piece[i]->castling << '\n';
 		if (piece[i]->castling)
 		{
 			SpecialRules::castling(piece, i);
