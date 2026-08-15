@@ -57,7 +57,9 @@ void Game::initialText()
 	cout << "- Check and Checkmate are detected.\n\n";
 
 	cout << "==================================================\n";
-	cout << "Press Enter to start the game...";
+	Color::setColor(3);
+	cout << '\n' << "Press Enter to start the game...";
+	Color::setColor(7);
 	char start;
 	cin.get(start);
 	cout << '\n';
@@ -68,14 +70,19 @@ void Game::initialize()
 {
 	initialText();
 
+	cout << "Enter the name of player 1 (Lower Pieces): ";
+	Color::setColor(11);
+	getline(cin, player1Name, '\n');
+	Color::setColor(7);
+	cout << "Enter the name of player 2 (Upper Pieces): ";
+	Color::setColor(11);
+	getline(cin, player2Name, '\n');
+	Color::setColor(7);
+	cout << '\n';
+
 	player1.initialize();
 	player2.initialize();
 
-	cout << "Enter the name of player 1 (Lower Pieces): ";
-	getline(cin, player1Name, '\n');
-	cout << "Enter the name of player 2 (Upper Pieces): ";
-	getline(cin, player2Name, '\n');
-	cout << '\n';
 
 	srand(time(0));
 	int choice = rand() % 2 + 1;
@@ -100,6 +107,7 @@ void Game::start()
 		board.draw(player1.piece, player2.piece);
 		cout << setw(40) << setfill('-') << '-' << '\n';
 	}
+	cout << '\n' << "Checkmate!" << '\n';
 	if (playerTurn == '1')
 	{
 		Color::setColor(2);

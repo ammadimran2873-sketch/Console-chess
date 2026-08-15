@@ -9,14 +9,22 @@ void Board::draw(vector<Piece*> player1Pieces, vector<Piece*> player2Pieces)
 	for (int row = 9; row >= 0; row = row - 1)
 	{
 		if (row == 9 || row == 0)
+		{
 			cout << left << setw(3) << setfill(' ') << ' ';
+		}
 		else
+		{
+			Color::setColor(15);
 			cout << left << setw(3) << row << setfill(' ');
+			Color::setColor(7);
+		}
 		for (char column = 'a'; column <= 'h'; column = char(column + 1))
 		{
 			if (row == 9 || row == 0)
 			{
+				Color::setColor(15);
 				cout << ' ' << column << "  ";
+				Color::setColor(7);
 			}
 			else
 			{
@@ -33,24 +41,29 @@ void Board::draw(vector<Piece*> player1Pieces, vector<Piece*> player2Pieces)
 				}
 				if (foundP1 == 1)
 				{
-					Color::setColor(8);
+					Color::setColor(13);
 					cout << '[' << player1Pieces[i]->displayName() << ']' << ' ';
+					Color::setColor(7);
 				}
 				else if (foundP2 == 1)
 				{
-					Color::setColor(15);
+					Color::setColor(6);
 					cout << '[' << player2Pieces[i]->displayName() << ']' << ' ';
+					Color::setColor(7);
 				}
 				else
 				{
-					Color::setColor(7);
 					cout << '[' << ' ' << ']' << ' ';
 				}
 			}
 		}
 		Color::setColor(7);
 		if (!(row == 9 || row == 0))
+		{
+			Color::setColor(15);
 			cout << right << setw(2) << row << setfill(' ');
+			Color::setColor(7);
+		}
 		cout << '\n';
 	}
 	cout << right;
