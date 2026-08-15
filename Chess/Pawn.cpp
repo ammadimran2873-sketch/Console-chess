@@ -53,7 +53,6 @@ bool Pawn::isLegalMove(char column, int row, vector<Piece*>piece, vector<Piece*>
             {
                 if (opponentPiece[i]->enPassantpossible && opponentPiece[i]->row == 5)
                 {
-                    opponentPiece[i]->enPassantpossible = 0;
                     if ((opponentPiece[i]->column == this->column + 1 || opponentPiece[i]->column == this->column - 1))
                     {
                         if (this->row + 1 == row && column == opponentPiece[i]->column)

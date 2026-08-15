@@ -93,10 +93,24 @@ bool Player1::isValideMove(char destColumn, int destRow, int i, vector<Piece*> p
 
 void Player1::update(char column, int row, int i, vector<Piece*>& player2Pieces, char& playerTurn, bool& moveUnderCheck, bool& check)
 {
-	char prevColumn;
-	int prevRow;
-	prevColumn = piece[i]->column;
-	prevRow = piece[i]->row;
+	char prevColumn = piece[i]->column;
+	int prevRow = piece[i]->row;
+
+	// To reset the En Passant
+	for (int j = 0; j < player2Pieces.size(); j++)
+	{
+		if (player2Pieces[j]->name == 'p')
+		{
+			player2Pieces[j]->enPassantpossible = 0;
+			player2Pieces[j]->pawnTwoSquareMove = 0;
+		}
+	}
+	if (piece[i]->name == 'P')
+	{
+		if (piece[i]->pawnTwoSquareMove)
+			piece[i]->enPassantpossible = 1;
+	}
+
 	// Check For catling because it moves 2 squares and neither square should be under attack
 	if (piece[i]->name == 'K')
 	{
@@ -144,6 +158,7 @@ void Player1::update(char column, int row, int i, vector<Piece*>& player2Pieces,
 		moveUnderCheck = 0;
 	}
 
+	
 	if (piece[i]->name == 'P')
 	{
 		if (row == 8)

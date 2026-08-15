@@ -95,6 +95,22 @@ void Player2::update(char column, int row, int i, vector<Piece*>& player1Pieces,
 {
 	char prevColumn = piece[i]->column;
 	int prevRow = piece[i]->row;
+
+	// To reset the En Passant
+	for (int j = 0; j < player1Pieces.size(); j++)
+	{
+		if (player1Pieces[j]->name == 'p')
+		{
+			player1Pieces[j]->enPassantpossible = 0;
+			player1Pieces[j]->pawnTwoSquareMove = 0;
+		}
+	}
+	if (piece[i]->name == 'P')
+	{
+		if (piece[i]->pawnTwoSquareMove)
+			piece[i]->enPassantpossible = 1;
+	}
+	
 	// Check For catling because it moves 2 squares and neither square should be under attack
 	if (piece[i]->name == 'K')
 	{
