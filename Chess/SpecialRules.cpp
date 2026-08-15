@@ -131,80 +131,134 @@ bool SpecialRules::isCheck(vector<Piece*> attackedPiece, vector<Piece*> attackin
 bool SpecialRules::isCheckmate(vector<Piece*>& attackedPiece, vector<Piece*>& attackingPiece)
 {
 	int attackingPieceIndex = 0;
+
 	bool check = isCheck(attackedPiece, attackingPiece, attackingPieceIndex);
 
-	// King movement
+	// If the king is not in check, it cannot be checkmate
+	if (!check)
+		return false;
+
 	int kingIndex = Math::findKingIndex(attackedPiece);
+
 	char kingPrevColumn = attackedPiece[kingIndex]->column;
 	int kingPrevRow = attackedPiece[kingIndex]->row;
+	bool kingPrevFirstMove = attackedPiece[kingIndex]->firstMove;
+
+	bool canEscape = false;
 	int moveCases = 1;
-	while (check && moveCases <= 8)
+
+	while (!canEscape && moveCases <= 8)
 	{
-		// King 8 Possible Legal Moves To Escape Check
+		char targetCol = kingPrevColumn;
+		int targetRow = kingPrevRow;
+
+		// Generate King's 8 possible moves
 		if (moveCases == 1)
 		{
-			attackedPiece[kingIndex]->updatePosition(kingPrevColumn, kingPrevRow + 1);
+			targetRow = kingPrevRow + 1;
 		}
 		else if (moveCases == 2)
 		{
-			attackedPiece[kingIndex]->updatePosition(kingPrevColumn, kingPrevRow - 1);
+			targetRow = kingPrevRow - 1;
 		}
 		else if (moveCases == 3)
 		{
-			attackedPiece[kingIndex]->updatePosition(kingPrevColumn + 1, kingPrevRow);
+			targetCol = kingPrevColumn + 1;
 		}
 		else if (moveCases == 4)
 		{
-			attackedPiece[kingIndex]->updatePosition(kingPrevColumn - 1, kingPrevRow);
+			targetCol = kingPrevColumn - 1;
 		}
 		else if (moveCases == 5)
 		{
-			attackedPiece[kingIndex]->updatePosition(kingPrevColumn + 1, kingPrevRow + 1);
+			targetCol = kingPrevColumn + 1;
+			targetRow = kingPrevRow + 1;
 		}
 		else if (moveCases == 6)
 		{
-			attackedPiece[kingIndex]->updatePosition(kingPrevColumn - 1, kingPrevRow + 1);
+			targetCol = kingPrevColumn - 1;
+			targetRow = kingPrevRow + 1;
 		}
 		else if (moveCases == 7)
 		{
-			attackedPiece[kingIndex]->updatePosition(kingPrevColumn + 1, kingPrevRow - 1);
+			targetCol = kingPrevColumn + 1;
+			targetRow = kingPrevRow - 1;
 		}
 		else if (moveCases == 8)
 		{
-			attackedPiece[kingIndex]->updatePosition(kingPrevColumn - 1, kingPrevRow - 1);
+			targetCol = kingPrevColumn - 1;
+			targetRow = kingPrevRow - 1;
 		}
 
-		// Piece Capture Temporarily
-		char erasedPieceName = 0;
-		bool pieceCapture = Math::isPieceCapture(attackedPiece[kingIndex]->column, attackedPiece[kingIndex]->row, attackingPiece, erasedPieceName);
-
-
-		if(attackedPiece[kingIndex]->isLegalMove(attackedPiece[kingIndex]->column, attackedPiece[kingIndex]->row, attackedPiece, attackingPiece))
+		if (attackedPiece[kingIndex]->isLegalMove(
+			targetCol, targetRow, attackedPiece, attackingPiece))
 		{
-			if (attackedPiece[kingIndex]->isPathClear(attackedPiece[kingIndex]->column, attackedPiece[kingIndex]->row, attackedPiece, -1))
+	
+			if (attackedPiece[kingIndex]->isPathClear(
+				targetCol, targetRow, attackedPiece, kingIndex))
 			{
-				if (attackedPiece[kingIndex]->isPathClear(attackedPiece[kingIndex]->column, attackedPiece[kingIndex]->row, attackingPiece, -1))
+				
+				int capturedPieceIndex = -1;
+				bool found = 0;
+				for (int i = 0; i < attackingPiece.size() && !found; i++)
 				{
-					check = isCheck(attackedPiece, attackingPiece);
+					if (attackingPiece[i]->column == targetCol &&
+						attackingPiece[i]->row == targetRow)
+					{
+						capturedPieceIndex = i;
+						found = 1;
+					}
+				}
+
+				// Save pointer to captured piece
+				Piece* capturedPiece = nullptr;
+
+				if (capturedPieceIndex != -1)
+				{
+					capturedPiece = attackingPiece[capturedPieceIndex];
+
+					// Temporarily remove captured enemy piece
+					attackingPiece.erase(attackingPiece.begin() + capturedPieceIndex);
+				}
+
+				attackedPiece[kingIndex]->updatePosition(
+					targetCol, targetRow
+				);
+
+				bool stillInCheck = isCheck(attackedPiece, attackingPiece);
+
+				if (!stillInCheck)
+				{
+					canEscape = true;
+				}
+
+				
+				attackedPiece[kingIndex]->updatePosition(kingPrevColumn, kingPrevRow);
+
+				attackedPiece[kingIndex]->firstMove = kingPrevFirstMove;
+
+			
+				if (capturedPiece != nullptr)
+				{
+					attackingPiece.insert(attackingPiece.begin() + capturedPieceIndex, capturedPiece);
 				}
 			}
 		}
-		
-		if (pieceCapture)
-		{
-			Math::createErasedPiece(attackingPiece, attackedPiece[kingIndex]->column, attackedPiece[kingIndex]->row, erasedPieceName);
-		}
-		attackedPiece[kingIndex]->updatePosition(kingPrevColumn, kingPrevRow);
+
 		moveCases = moveCases + 1;
 	}
-	if(!check)
+
+	
+
+	if (canEscape)
 		return false;
-	else
-	{
-		bool blockingPossible = Math::isBlockingPossible(attackedPiece, kingIndex, attackingPiece, attackingPieceIndex);
-		if (blockingPossible)
-			return false;
-	}
+
+	bool blockingPossible = Math::isBlockingPossible(attackedPiece, kingIndex, attackingPiece, attackingPieceIndex);
+
+	if (blockingPossible)
+		return false;
+
+	// King cannot move and no piece can block/capture attacker
 	return true;
 }
 

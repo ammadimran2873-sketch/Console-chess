@@ -4,7 +4,7 @@ A fully functional **2-player console-based Chess game** developed in **C++** us
 
 ---
 
-# Features
+## Features
 
 * ♟️ Two-player turn-based gameplay
 * ✅ Complete legal move validation for all chess pieces
@@ -20,7 +20,7 @@ A fully functional **2-player console-based Chess game** developed in **C++** us
 
 ---
 
-# Technologies Used
+## Technologies Used
 
 * **Language:** C++
 * **Programming Paradigm:** Object-Oriented Programming (OOP)
@@ -29,7 +29,7 @@ A fully functional **2-player console-based Chess game** developed in **C++** us
 
 ---
 
-# OOP Concepts Used
+## Concepts Used
 
 * Classes and Objects
 * Inheritance
@@ -42,13 +42,13 @@ A fully functional **2-player console-based Chess game** developed in **C++** us
 
 ---
 
-# Project Structure
+## Project Structure
 
-The project is organized into multiple classes, with each chess piece implementing its own movement logic. The game logic, board management, move validation, and rule enforcement are separated into different components to keep the code modular, reusable, and easy to maintain.
+The project is organized into multiple classes, with each chess piece implementing its own movement logic. The game logic, board management, move validation, and rule enforcement are separated into different components to keep the code modular and easy to maintain.
 
 ---
 
-# Learning Outcomes
+## Learning Outcomes
 
 This project helped strengthen my understanding of:
 
@@ -61,7 +61,7 @@ This project helped strengthen my understanding of:
 ---
 
 
-# How to Run
+## How to Run
 
 1. Clone this repository.
 2. Open the project in your preferred C++ IDE (Visual Studio, Code::Blocks, CLion, etc.).
@@ -71,7 +71,7 @@ This project helped strengthen my understanding of:
 
 ---
 
-# Author
+## Author
 
 **M. Ammad**
 
