@@ -20,6 +20,16 @@ A fully functional **2-player console-based Chess game** developed in **C++** us
 
 ---
 
+## Screenshots
+
+![Chess Board](game-play/chessboard.png)
+
+![Check](game-play/check.png)
+
+![Checkmate](game-play/checkmate.png)
+
+
+
 ## Technologies Used
 
 * **Language:** C++
