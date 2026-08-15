@@ -1,4 +1,5 @@
 #include "Board.h"
+#include"Color.h"
 #include<iostream>
 #include<iomanip>
 
@@ -31,13 +32,23 @@ void Board::draw(vector<Piece*> player1Pieces, vector<Piece*> player2Pieces)
 						i = i + 1;
 				}
 				if (foundP1 == 1)
+				{
+					Color::setColor(8);
 					cout << '[' << player1Pieces[i]->displayName() << ']' << ' ';
-				else if(foundP2 == 1)
+				}
+				else if (foundP2 == 1)
+				{
+					Color::setColor(15);
 					cout << '[' << player2Pieces[i]->displayName() << ']' << ' ';
+				}
 				else
+				{
+					Color::setColor(7);
 					cout << '[' << ' ' << ']' << ' ';
+				}
 			}
 		}
+		Color::setColor(7);
 		if (!(row == 9 || row == 0))
 			cout << right << setw(2) << row << setfill(' ');
 		cout << '\n';

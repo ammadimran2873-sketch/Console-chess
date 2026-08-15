@@ -45,44 +45,41 @@ bool Pawn::isLegalMove(char column, int row, vector<Piece*>piece, vector<Piece*>
             }
             return false;
         }
-        else
+        //For En passant
+        i = 0;
+        while (i < opponentPiece.size())
         {
-            //For En passant
-            i = 0;
-            while (i < opponentPiece.size())
+            if (opponentPiece[i]->name == 'p' && opponentPiece[i]->pawnTwoSquareMove == 1)
             {
-                if (opponentPiece[i]->name == 'p' && opponentPiece[i]->pawnTwoSquareMove == 1)
+                if (opponentPiece[i]->enPassantpossible && opponentPiece[i]->row == 5)
                 {
-                    if (opponentPiece[i]->enPassantpossible && opponentPiece[i]->row == 5)
+                    opponentPiece[i]->enPassantpossible = 0;
+                    if ((opponentPiece[i]->column == this->column + 1 || opponentPiece[i]->column == this->column - 1))
                     {
-                        opponentPiece[i]->enPassantpossible = 0;
-                        if ((opponentPiece[i]->column == this->column + 1 || opponentPiece[i]->column == this->column - 1))
+                        if (this->row + 1 == row && column == opponentPiece[i]->column)
                         {
-                            if (this->row + 1 == row && column == opponentPiece[i]->column)
-                            {
-                                enPassantMove = 1;
-                                return true;
-                            }
+                            enPassantMove = 1;
+                            return true;
                         }
                     }
                 }
-                else if (opponentPiece[i]->name == 'P' && opponentPiece[i]->pawnTwoSquareMove == 1)
-                {
-                    if (opponentPiece[i]->enPassantpossible && opponentPiece[i]->row == 4)
-                    {
-                        opponentPiece[i]->enPassantpossible = 0;
-                        if ((opponentPiece[i]->column == this->column + 1 || opponentPiece[i]->column == this->column - 1))
-                        {
-                            if (this->row - 1 == row && column == opponentPiece[i]->column)
-                            {
-                                enPassantMove = 1;
-                                return true;
-                            }
-                        }
-                    }
-                }
-                i = i + 1;
             }
+            else if (opponentPiece[i]->name == 'P' && opponentPiece[i]->pawnTwoSquareMove == 1)
+            {
+                if (opponentPiece[i]->enPassantpossible && opponentPiece[i]->row == 4)
+                {
+                    opponentPiece[i]->enPassantpossible = 0;
+                    if ((opponentPiece[i]->column == this->column + 1 || opponentPiece[i]->column == this->column - 1))
+                    {
+                        if (this->row - 1 == row && column == opponentPiece[i]->column)
+                        {
+                            enPassantMove = 1;
+                            return true;
+                        }
+                    }
+                }
+            }
+            i = i + 1;
         }
 
         // For one unit vertical

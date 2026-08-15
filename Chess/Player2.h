@@ -16,6 +16,6 @@ public:
 	void initialize() ;
 	int findPiece(char srcColumn, int srcRow) ;
 	bool isValideMove(char destColumn, int destRow, int i, vector<Piece*> player1Pieces) ;
-	void update(char column, int row, int i, vector<Piece*>& player1Pieces, char& playerTurn, bool& moveUnderCheck, bool& check);
+	void update(char column, int row, int i, vector<Piece*>& player1Pieces, char& playerTurn, bool& moveUnderCheck, bool& check) ;
 };
 

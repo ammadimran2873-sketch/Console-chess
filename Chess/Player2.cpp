@@ -1,4 +1,5 @@
 #include "Player2.h"
+#include"Color.h"
 #include"Pawn.h"
 #include"Rook.h"
 #include"Knight.h"
@@ -56,7 +57,9 @@ int Player2::findPiece(char srcColumn, int srcRow)
 	}
 	if (!found)
 	{
-		cout << '\n' << "None of your pieces is present at that location!" << '\n';
+		Color::setColor(4);
+		cout << '\n' << "None of your pieces is present\nat that location!" << '\n';
+		Color::setColor(7);
 		return -1;
 	}
 	return i;
@@ -73,13 +76,17 @@ bool Player2::isValideMove(char destColumn, int destRow, int i, vector<Piece*> p
 		}
 		else
 		{
+			Color::setColor(4);
 			cout << '\n' << "Path is not clear!" << '\n';
+			Color::setColor(7);
 			return false;
 		}
 	}
 	else
 	{
-		cout << '\n' << "Illegal Move!" << '\n' << "This move is not valid for the piece!" << '\n';
+		Color::setColor(4);
+		cout << '\n' << "Illegal Move!" << '\n' << "This move is not valid!" << '\n';
+		Color::setColor(7);
 		return false;
 	}
 }
