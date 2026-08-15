@@ -22,7 +22,7 @@ A fully functional **2-player console-based Chess game** developed in **C++** us
 
 ## Screenshots
 
-![Chess Board](game-play/chessboard.png)
+![Chess Board](game-play/chessBoard.png)
 
 ![Check](game-play/check.png)
 
